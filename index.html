@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Siswa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        form {
+            max-width: 300px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h2>Form Absensi Siswa</h2>
+    <form id="absenForm">
+        <label>Nama:</label>
+        <input type="text" id="nama" required>
+        
+        <label>Kelas:</label>
+        <input type="text" id="kelas" required>
+        
+        <label>Status:</label>
+        <select id="status">
+            <option value="Hadir">Hadir</option>
+            <option value="Izin">Izin</option>
+            <option value="Sakit">Sakit</option>
+            <option value="Alpha">Alpha</option>
+        </select>
+        
+        <button type="submit">Kirim Absensi</button>
+    </form>
+
+    <p id="responseMessage"></p>
+
+    <script>
+        document.getElementById("absenForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var nama = document.getElementById("nama").value;
+            var kelas = document.getElementById("kelas").value;
+            var status = document.getElementById("status").value;
+            var scriptURL = "PASTE_WEB_APP_URL_HERE"; // Ganti dengan URL Web App dari Google Apps Script
+
+            fetch(scriptURL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ nama: nama, kelas: kelas, status: status })
+            }).then(() => {
+                document.getElementById("responseMessage").innerText = "Absensi berhasil dikirim!";
+                document.getElementById("absenForm").reset();
+            }).catch(error => console.error("Error!", error));
+        });
+    </script>
+</body>
+</html>
