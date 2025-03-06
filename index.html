@@ -5,47 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Absensi Siswa</title>
     <style>
+        /* Styling Umum */
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        form {
-            max-width: 300px;
-            margin: auto;
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
             padding: 20px;
-            border: 1px solid #ccc;
             border-radius: 10px;
-            background: #f9f9f9;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            text-align: left;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
         input, select, button {
             width: 100%;
-            padding: 10px;
-            margin: 5px 0;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Tombol Submit */
+        button {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Pesan Status */
+        #responseMessage {
+            margin-top: 10px;
+            font-size: 14px;
+            color: green;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <h2>Form Absensi Siswa</h2>
-    <form id="absenForm">
-        <label>Nama:</label>
-        <input type="text" id="nama" required>
-        
-        <label>Kelas:</label>
-        <input type="text" id="kelas" required>
-        
-        <label>Status:</label>
-        <select id="status">
-            <option value="Hadir">Hadir</option>
-            <option value="Izin">Izin</option>
-            <option value="Sakit">Sakit</option>
-            <option value="Alpha">Alpha</option>
-        </select>
-        
-        <button type="submit">Kirim Absensi</button>
-    </form>
+    <div class="container">
+        <h2>Form Absensi Siswa</h2>
+        <form id="absenForm">
+            <label for="nama">Nama:</label>
+            <input type="text" id="nama" placeholder="Masukkan nama" required>
 
-    <p id="responseMessage"></p>
+            <label for="kelas">Kelas:</label>
+            <input type="text" id="kelas" placeholder="Masukkan kelas" required>
+
+            <label for="status">Status:</label>
+            <select id="status">
+                <option value="Hadir">Hadir</option>
+                <option value="Izin">Izin</option>
+                <option value="Sakit">Sakit</option>
+                <option value="Alpha">Alpha</option>
+            </select>
+
+            <button type="submit">Kirim Absensi</button>
+        </form>
+
+        <p id="responseMessage"></p>
+    </div>
 
     <script>
         document.getElementById("absenForm").addEventListener("submit", function(event) {
@@ -54,7 +112,7 @@
             var nama = document.getElementById("nama").value;
             var kelas = document.getElementById("kelas").value;
             var status = document.getElementById("status").value;
-            var scriptURL = "PASTE_WEB_APP_URL_HERE"; // Ganti dengan URL Web App dari Google Apps Script
+            var scriptURL = "https://script.google.com/macros/s/AKfycbzmV6S0R8nmmx9KZ2Hw4yhESfRGUFLAVgT1Ofga-sW9UqLY-XCzZ58CIDTU3V1-w0mWAw/exec"; // Ganti dengan URL Web App dari Google Apps Script
 
             fetch(scriptURL, {
                 method: "POST",
@@ -64,9 +122,12 @@
                 },
                 body: JSON.stringify({ nama: nama, kelas: kelas, status: status })
             }).then(() => {
-                document.getElementById("responseMessage").innerText = "Absensi berhasil dikirim!";
+                document.getElementById("responseMessage").innerText = "✅ Absensi berhasil dikirim!";
                 document.getElementById("absenForm").reset();
-            }).catch(error => console.error("Error!", error));
+            }).catch(error => {
+                document.getElementById("responseMessage").innerText = "❌ Gagal mengirim absensi!";
+                console.error("Error!", error);
+            });
         });
     </script>
 </body>
